@@ -9,6 +9,7 @@ public class Level {
     private List<Block> blocks;
     private List<Enemy> enemies;
     private List<Item> items;
+    private Goal goal;           // Ziel am Levelende
     private int width;
 
     public Level() {
@@ -20,6 +21,7 @@ public class Level {
     }
 
     private void generateLevel() {
+        // Ebene wie bisher generieren
         for (int i = 0; i < width; i += 32) blocks.add(new Block(i, 532, BlockType.GROUND));
         for (int i = 300; i < 500; i += 32) blocks.add(new Block(i, 400, BlockType.BRICK));
         blocks.add(new Block(350, 300, BlockType.QUESTION));
@@ -39,20 +41,13 @@ public class Level {
         items.add(new Item(200, 500, model.enums.ItemType.COIN));
         items.add(new Item(250, 500, model.enums.ItemType.COIN));
         items.add(new Item(1050, 318, model.enums.ItemType.COIN));
-    }
-
-    public void spawnItem(int x, int y) {
-        Random rand = new Random();
-        model.enums.ItemType type;
-        int chance = rand.nextInt(100);
-        if (chance < 50) type = model.enums.ItemType.COIN;
-        else if (chance < 80) type = model.enums.ItemType.MUSHROOM;
-        else type = model.enums.ItemType.FIRE_FLOWER;
-        items.add(new Item(x, y, type));
+        // Ziel erstellen
+        goal = new Goal(width - 100, 500, 50, 100);
     }
 
     public void update() {
         enemies.forEach(Enemy::update);
+        // Ziel braucht kein Update
     }
 
     public void draw(Graphics2D g) {
@@ -67,10 +62,13 @@ public class Level {
         blocks.forEach(b -> b.draw(g));
         enemies.stream().filter(e->!e.isDead()).forEach(e->e.draw(g));
         items.forEach(i->i.draw(g));
+        // Ziel rendern
+        if (goal != null) goal.draw(g);
     }
 
     public List<Block> getBlocks() { return blocks; }
     public List<Enemy> getEnemies() { return enemies; }
     public List<Item> getItems() { return items; }
+    public Goal getGoal() { return goal; }
     public int getWidth() { return width; }
 }
