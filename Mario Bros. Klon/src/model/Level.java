@@ -9,7 +9,7 @@ public class Level {
     private List<Block> blocks;
     private List<Enemy> enemies;
     private List<Item> items;
-    private Goal goal;           // Ziel am Levelende
+    private Goal goal;
     private int width;
 
     public Level() {
@@ -21,6 +21,9 @@ public class Level {
     }
 
     private void generateLevel() {
+        int levelHeight = 560;
+        int goalX = width - 100;
+
         // Boden durchgehend
         for (int i = 0; i < width; i += 32) {
             blocks.add(new Block(i, 532, BlockType.GROUND));
@@ -52,22 +55,9 @@ public class Level {
             }
         }
 
-        // Springpassagen / Hürden
-        for (int i = 1400; i <= 1800; i += 160) {
-            blocks.add(new Block(i, 450, BlockType.BRICK));
-            blocks.add(new Block(i + 32, 450, BlockType.QUESTION));
-        }
-
-        // Langgezogene Brücke / flache Plattform
+        //  flache Plattform
         for (int i = 2000; i < 2400; i += 32) {
             blocks.add(new Block(i, 400, BlockType.BRICK));
-        }
-
-        // "Turm" vor Ziel
-        for (int step = 0; step < 5; step++) {
-            for (int j = 0; j <= step; j++) {
-                blocks.add(new Block(width - 300 + step * 32, 532 - j * 32, BlockType.BRICK));
-            }
         }
 
         // Gegner verteilen
@@ -87,33 +77,49 @@ public class Level {
         items.add(new Item(2600, 500, model.enums.ItemType.COIN));
 
         // Ziel am Ende
-        goal = new Goal(width - 100, 500, 50, 100);
+        goal = new Goal(goalX);
     }
-
 
     public void update() {
         enemies.forEach(Enemy::update);
     }
 
     public void draw(Graphics2D g) {
-        g.setColor(new Color(135,206,235));
-        g.fillRect(0,0,width,600);
+        g.setColor(new Color(135, 206, 235));
+        g.fillRect(0, 0, width, 600);
         g.setColor(Color.WHITE);
-        for (int i=0; i<width; i+=200) {
-            g.fillOval(i,100,60,30);
-            g.fillOval(i+20,90,40,25);
-            g.fillOval(i+40,100,50,30);
+        for (int i = 0; i < width; i += 200) {
+            g.fillOval(i, 100, 60, 30);
+            g.fillOval(i + 20, 90, 40, 25);
+            g.fillOval(i + 40, 100, 50, 30);
         }
         blocks.forEach(b -> b.draw(g));
-        enemies.stream().filter(e->!e.isDead()).forEach(e->e.draw(g));
-        items.forEach(i->i.draw(g));
+        enemies.stream().filter(e -> !e.isDead()).forEach(e -> e.draw(g));
+        items.forEach(i -> i.draw(g));
+
         // Ziel rendern
-        if (goal != null) goal.draw(g);
+        if (goal != null) {
+            goal.draw(g);
+        }
+    }
+    public List<Block> getBlocks() {
+        return blocks;
     }
 
-    public List<Block> getBlocks() { return blocks; }
-    public List<Enemy> getEnemies() { return enemies; }
-    public List<Item> getItems() { return items; }
-    public Goal getGoal() { return goal; }
-    public int getWidth() { return width; }
+    public List<Enemy> getEnemies() {
+        return enemies;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public Goal getGoal() {
+        return goal;
+    }
+
 }

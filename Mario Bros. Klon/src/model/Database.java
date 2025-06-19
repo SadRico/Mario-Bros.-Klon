@@ -16,7 +16,7 @@ public class Database {
             e.printStackTrace();
         }
     }
-    
+
     private void createTable() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS scores (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +

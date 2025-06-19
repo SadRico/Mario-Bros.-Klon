@@ -3,6 +3,7 @@ package controller;
 import java.util.Iterator;
 import javax.swing.JOptionPane;
 
+import model.Fireball;
 import model.Level;
 import model.Player;
 import model.Enemy;
@@ -73,35 +74,49 @@ public class GameController implements Runnable {
     }
 
     private void handleBlockCollisions() {
-        Iterator<Block> bit = level.getBlocks().iterator();
-        while (bit.hasNext()) {
-            Block block = bit.next();
+        boolean onAnyBlock = false;
+
+        // Horizontale Bewegung und Kollision
+        player.x += player.velocityX;
+        for (Block block : level.getBlocks()) {
             if (player.getBounds().intersects(block.getBounds())) {
-                // oben landen
+                if (player.velocityX > 0) {
+                    player.x = block.x - player.width;
+                } else if (player.velocityX < 0) {
+                    player.x = block.x + block.width;
+                }
+                player.velocityX = 0;
+            }
+        }
+
+        // Vertikale Bewegung und Kollision
+        player.y += player.velocityY;
+        for (Iterator<Block> it = level.getBlocks().iterator(); it.hasNext();) {
+            Block block = it.next();
+            if (player.getBounds().intersects(block.getBounds())) {
                 if (player.velocityY > 0 && player.y + player.height - player.velocityY <= block.y) {
+                    // Landet auf Block
                     player.y = block.y - player.height;
                     player.velocityY = 0;
-                    player.onGround = true;
-                }
-                // von unten gegen Block
-                else if (player.velocityY < 0 && player.y <= block.y + block.height) {
+                    onAnyBlock = true;
+                } else if (player.velocityY < 0 && player.y <= block.y + block.height) {
+                    // Stößt von unten gegen Block
                     player.y = block.y + block.height;
                     player.velocityY = 0;
                     if (block.type == BlockType.QUESTION) {
                         block.hit();
-                       // level.spawnItem(block.x, block.y - block.height);
                     } else if (block.type == BlockType.BRICK) {
-                        bit.remove();
+                        it.remove();
                     }
-                }
-                // seitlich
-                else {
-                    if (player.x < block.x) player.x = block.x - player.width;
-                    else player.x = block.x + block.width;
                 }
             }
         }
+
+        player.onGround = onAnyBlock;
     }
+
+
+
 
     private void handleItemCollisions() {
         Iterator<Item> iit = level.getItems().iterator();
@@ -132,8 +147,20 @@ public class GameController implements Runnable {
 
     private void handleEnemyCollisions() {
         Iterator<Enemy> eit = level.getEnemies().iterator();
+
         while (eit.hasNext()) {
             Enemy enemy = eit.next();
+
+            // Prüfe zuerst Fireball-Kollision
+            for (Fireball f : player.fireballs) {
+                if (!enemy.isDead() && f.getBounds().intersects(enemy.getBounds())) {
+                    enemy.kill();
+                    f.active = false;
+                    player.score += 100;
+                }
+            }
+
+            // Spieler-Kollision mit Gegner
             if (!enemy.isDead() && player.getBounds().intersects(enemy.getBounds())) {
                 if (player.velocityY > 0) {
                     enemy.kill();
@@ -144,6 +171,9 @@ public class GameController implements Runnable {
                 }
             }
         }
+
+        // Entferne deaktivierte Fireballs aus der Liste
+        player.fireballs.removeIf(f -> !f.active);
     }
 
     private void checkLevelComplete() {

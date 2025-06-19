@@ -7,21 +7,30 @@ import java.awt.Rectangle;
 public class Goal {
     private int x, y, width, height;
 
-    public Goal(int x, int y, int width, int height) {
+    int flagHeight = 360; // Höhe der Fahnenstange
+    int groundY = 532;
+
+    public Goal(int x) {
         this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        this.width = 20;
+        this.height = flagHeight;
+        this.y = groundY - flagHeight; // Fahnenstange steht auf dem Boden
     }
+
 
     public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
     }
 
     public void draw(Graphics2D g) {
+        // Fahnenstange zeichnen
         g.setColor(Color.MAGENTA);
         g.fillRect(x, y, width, height);
+
+        // Fahne oben an der Stange (optional)
         g.setColor(Color.WHITE);
-        g.drawString("Ziel", x + 10, y + height / 2);
+        g.fillRect(x + width, y, 30, 20);
+        g.setColor(Color.RED);
+        g.drawString("Ziel", x + width + 5, y + 15);
     }
 }

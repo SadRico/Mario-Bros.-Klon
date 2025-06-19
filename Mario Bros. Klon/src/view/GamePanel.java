@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import model.Level;
 import model.Player;
+import model.Fireball;
 
 public class GamePanel extends JPanel {
     private Level level;
@@ -31,6 +32,11 @@ public class GamePanel extends JPanel {
             if (cameraX < 0) cameraX = 0;
             if (cameraX > level.getWidth() - getWidth()) {
                 cameraX = level.getWidth() - getWidth();
+            }
+
+            // Alle Fireballs zeichnen
+            for (Fireball f : player.fireballs) {
+                f.draw(g2d);
             }
 
             // Welt mit Kamera verschieben

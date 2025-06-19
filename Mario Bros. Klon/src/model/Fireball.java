@@ -1,38 +1,31 @@
 package model;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Color;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 public class Fireball {
-    public int x, y, width = 16, height = 16;
-    public int velocityX, velocityY;
-    public boolean active;
+    public int x, y, width = 12, height = 12;
+    public int velocityX;
+    public boolean active = true;
 
-    public Fireball(int x, int y, int direction) {
-        this.x = x;
-        this.y = y;
-        this.velocityX = direction * 8;
-        this.velocityY = -2;
-        this.active = true;
+    public Fireball(int startX, int startY, boolean facingRight) {
+        this.x = startX;
+        this.y = startY;
+        this.velocityX = facingRight ? 10 : -10;
     }
 
     public void update() {
-        if (active) {
-            x += velocityX;
-            y += velocityY;
-            velocityY += 1;
-            if (x < 0 || x > 3200 || y > 600) active = false;
-        }
+        x += velocityX;
+        // Optional: Bildschirmgrenzen prüfen
+        if (x < 0 || x > 3200) active = false;
     }
 
-    public Rectangle getBounds() { return new Rectangle(x, y, width, height); }
     public void draw(Graphics2D g) {
-        if (active) {
-            g.setColor(Color.ORANGE);
-            g.fillOval(x, y, width, height);
-            g.setColor(Color.RED);
-            g.fillOval(x+4, y+4, width-8, height-8);
-        }
+        g.setColor(Color.ORANGE);
+        g.fillOval(x, y, width, height);
+    }
+
+    public Rectangle2D getBounds() {
+        return new Rectangle2D.Double(x, y, width, height);
     }
 }
