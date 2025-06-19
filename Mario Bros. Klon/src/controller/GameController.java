@@ -35,7 +35,6 @@ public class GameController implements Runnable {
         startTime = System.currentTimeMillis();
     }
 
-
     @Override
     public void run() {
         final int fps = 60;
@@ -59,7 +58,6 @@ public class GameController implements Runnable {
         }
     }
 
-
     private void update() {
         player.update();
         level.update();
@@ -74,7 +72,6 @@ public class GameController implements Runnable {
             JOptionPane.showMessageDialog(view, "Game Over", "Game Over", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-
 
     private void handleGoalCollision() {
         if (level.getGoal() != null && player.getBounds().intersects(level.getGoal().getBounds())) {
@@ -196,4 +193,3 @@ public class GameController implements Runnable {
     }
     public Player getPlayer() { return player; }
 }
-

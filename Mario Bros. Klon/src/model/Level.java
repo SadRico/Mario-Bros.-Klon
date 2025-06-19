@@ -121,5 +121,4 @@ public class Level {
     public Goal getGoal() {
         return goal;
     }
-
 }
