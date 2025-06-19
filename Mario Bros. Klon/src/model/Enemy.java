@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import model.enums.EnemyType;
 import java.awt.Color;
+import java.util.List;
+
 
 public class Enemy {
     public int x, y, width = 32, height = 32;
@@ -19,9 +21,25 @@ public class Enemy {
         this.velocityX = direction * 2;
     }
 
-    public void update() {
+
+    public void update(List<Block> blocks) {
         if (!dead) {
             x += velocityX;
+
+            // Kollision mit Block prüfen
+            for (Block block : blocks) {
+                if (this.getBounds().intersects(block.getBounds())) {
+                    // Rückgängig machen
+                    x -= velocityX;
+
+                    // Richtung umkehren
+                    direction *= -1;
+                    velocityX = direction * 2;
+                    break;
+                }
+            }
+
+            // Optional: Levelbegrenzung
             if (x < 0 || x > 3200 - width) {
                 direction *= -1;
                 velocityX = direction * 2;

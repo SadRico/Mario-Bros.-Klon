@@ -81,18 +81,27 @@ public class Level {
     }
 
     public void update() {
-        enemies.forEach(Enemy::update);
+        for (Enemy enemy : enemies) {
+            enemy.update(blocks);
+        }
     }
 
     public void draw(Graphics2D g) {
-        g.setColor(new Color(135, 206, 235));
+        g.setColor(new Color(135, 206, 235)); // Himmel
         g.fillRect(0, 0, width, 600);
-        g.setColor(Color.WHITE);
+        g.setColor(Color.WHITE); // Wolken
         for (int i = 0; i < width; i += 200) {
             g.fillOval(i, 100, 60, 30);
             g.fillOval(i + 20, 90, 40, 25);
             g.fillOval(i + 40, 100, 50, 30);
         }
+        g.setColor(new Color(34, 139, 34));  // Büsche
+        for (int i = 0; i < width; i += 200) {
+            g.fillOval(i, 500, 60, 40);
+            g.fillOval(i + 30, 510, 50, 35);
+            g.fillOval(i + 60, 515, 55, 38);
+        }
+
         blocks.forEach(b -> b.draw(g));
         enemies.stream().filter(e -> !e.isDead()).forEach(e -> e.draw(g));
         items.forEach(i -> i.draw(g));

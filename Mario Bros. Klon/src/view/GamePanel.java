@@ -31,26 +31,28 @@ public class GamePanel extends JPanel {
         if (level != null && player != null) {
             Graphics2D g2d = (Graphics2D) g;
 
-            // Kamera-Position berechnen
             int cameraX = player.x - getWidth() / 2 + player.width / 2;
             cameraX = Math.max(0, Math.min(cameraX, level.getWidth() - getWidth()));
 
-            // Fireballs zeichnen
-            for (Fireball f : player.fireballs) {
-                f.draw(g2d);
-            }
-
             g2d.translate(-cameraX, 0);
+
             level.draw(g2d);
             player.draw(g2d);
+
+            // Feuerbälle zeichnen (wichtig!)
+            for (Fireball f : player.fireballs) {
+                if (f.active) {
+                    f.draw(g2d);
+                }
+            }
+
             g2d.translate(cameraX, 0);
 
-            // UI mit verstrichener Zeit zeichnen
-            if (overlay != null) {
-                overlay.draw(g2d, player, elapsedTime);
-            }
+            // UI-Overlay, Lebensanzeige, Punktestand, Zeit etc.
+            overlay.draw(g2d, player, elapsedTime);
         }
     }
+
 
     public void setup(Level level, Player player) {
         this.level = level;
