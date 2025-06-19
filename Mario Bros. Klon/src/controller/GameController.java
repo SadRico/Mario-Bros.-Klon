@@ -18,6 +18,7 @@ public class GameController implements Runnable {
     private GamePanel view;
     private Level level;
     private Player player;
+    private long startTime;
     private boolean running = true;
     private Database database;
 
@@ -31,7 +32,9 @@ public class GameController implements Runnable {
         level = new Level();
         player = new Player(100, 400);
         view.setup(level, player);
+        startTime = System.currentTimeMillis(); // Spielstartzeit
     }
+
 
     @Override
     public void run() {
@@ -40,35 +43,54 @@ public class GameController implements Runnable {
 
         while (running) {
             long start = System.currentTimeMillis();
+
             update();
+
+            long elapsedMillis = System.currentTimeMillis() - startTime;
+            long elapsedSeconds = elapsedMillis / 1000;
+            view.setElapsedTime(elapsedSeconds);
+
             view.repaint();
+
             long delta = System.currentTimeMillis() - start;
-            try { Thread.sleep(Math.max(0, frameTime - delta)); }
-            catch (InterruptedException ignored) {}
+            try {
+                Thread.sleep(Math.max(0, frameTime - delta));
+            } catch (InterruptedException ignored) {}
         }
     }
+
 
     private void update() {
         player.update();
         level.update();
+
         handleBlockCollisions();
         handleItemCollisions();
         handleEnemyCollisions();
         handleGoalCollision();
+
         if (player.lives <= 0) {
             running = false;
             JOptionPane.showMessageDialog(view, "Game Over", "Game Over", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
+
     private void handleGoalCollision() {
         if (level.getGoal() != null && player.getBounds().intersects(level.getGoal().getBounds())) {
             running = false;
             String name = JOptionPane.showInputDialog(view, "Gib deinen Namen ein:", "Highscore speichern", JOptionPane.PLAIN_MESSAGE);
             if (name == null || name.isEmpty()) name = "Player";
-            long totalTime = System.currentTimeMillis(); // optional: Zeit stoppen
-            try { database.saveScore(name, totalTime, player.score); }
-            catch (Exception e) { e.printStackTrace(); }
+
+            long elapsedTimeMillis = System.currentTimeMillis() - startTime;
+            long elapsedSeconds = elapsedTimeMillis / 1000;
+
+            try {
+                database.saveScore(name, elapsedSeconds, player.score);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             JOptionPane.showMessageDialog(view, "Ziel erreicht! Score gespeichert.", "Erfolg", JOptionPane.INFORMATION_MESSAGE);
         }
     }
@@ -114,9 +136,6 @@ public class GameController implements Runnable {
 
         player.onGround = onAnyBlock;
     }
-
-
-
 
     private void handleItemCollisions() {
         Iterator<Item> iit = level.getItems().iterator();
@@ -176,19 +195,7 @@ public class GameController implements Runnable {
         player.fireballs.removeIf(f -> !f.active);
     }
 
-    private void checkLevelComplete() {
-        if (player.x >= level.getWidth() - 100) {
-            running = false;
-            // Name-Eingabe und Highscore speichern
-            String name = JOptionPane.showInputDialog(view, "Gib deinen Namen ein:", "Highscore speichern", JOptionPane.PLAIN_MESSAGE);
-            if (name == null || name.isEmpty()) name = "Player";
-            long totalTime = System.currentTimeMillis();
-            try { database.saveScore(name, totalTime, player.score); }
-            catch (Exception e) { e.printStackTrace(); }
-            JOptionPane.showMessageDialog(view, "Level Complete! Score gespeichert.", "Erfolg", JOptionPane.INFORMATION_MESSAGE);
-        }
-    }
-
     public void stop() { running = false; }
     public Player getPlayer() { return player; }
 }
+
