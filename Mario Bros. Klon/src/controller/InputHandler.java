@@ -25,7 +25,7 @@ public class InputHandler extends KeyAdapter {
                 break;
             case KeyEvent.VK_W:
                 player.jump();
-                break;  // ⬅️ Sprung starten
+                break;
             case KeyEvent.VK_SPACE:
                 if (player.powerUp == model.enums.PowerUpType.FIRE) {
                     player.shootFireball();
@@ -45,7 +45,7 @@ public class InputHandler extends KeyAdapter {
                 break;
             case KeyEvent.VK_W:
                 player.stopJump();
-                break;  // ⬅️ Sprung abbrechen für variable Höhe
+                break;
         }
     }
 }

@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 public class Goal {
     private int x, y, width, height;
 
-    int flagHeight = 360; // Höhe der Fahnenstange
+    int flagHeight = 360;
     int groundY = 532;
 
     public Goal(int x) {

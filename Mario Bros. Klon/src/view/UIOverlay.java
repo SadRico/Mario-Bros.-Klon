@@ -11,8 +11,7 @@ public class UIOverlay {
         g.drawString("Punkte: " + player.score, 10, 50);
         g.drawString("Zeit: ", 10, 70);
 
-
-        // Zeit als Minuten:Sekunden anzeigen
+        // Zeit als Sekunden anzeigen
         long seconds = elapsedSeconds % 60;
         String timeStr = String.format("Zeit: %2d", seconds);
         g.drawString(timeStr, 10, 70);

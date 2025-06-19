@@ -16,7 +16,7 @@ public class Fireball {
 
     public void update() {
         x += velocityX;
-        // Optional: Bildschirmgrenzen prüfen
+        // Bildschirmgrenze prüfen
         if (x < 0 || x > 3200) active = false;
     }
 

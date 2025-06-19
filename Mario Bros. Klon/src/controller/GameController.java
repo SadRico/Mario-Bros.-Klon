@@ -32,7 +32,7 @@ public class GameController implements Runnable {
         level = new Level();
         player = new Player(100, 400);
         view.setup(level, player);
-        startTime = System.currentTimeMillis(); // Spielstartzeit
+        startTime = System.currentTimeMillis();
     }
 
 
@@ -170,7 +170,7 @@ public class GameController implements Runnable {
         while (eit.hasNext()) {
             Enemy enemy = eit.next();
 
-            // Prüfe zuerst Fireball-Kollision
+            // Prüft zuerst Fireball-Kollision
             for (Fireball f : player.fireballs) {
                 if (!enemy.isDead() && f.getBounds().intersects(enemy.getBounds())) {
                     enemy.kill();
@@ -191,11 +191,9 @@ public class GameController implements Runnable {
             }
         }
 
-        // Entferne deaktivierte Fireballs aus der Liste
+        // Entfernt Fireballs aus der Liste
         player.fireballs.removeIf(f -> !f.active);
     }
-
-    public void stop() { running = false; }
     public Player getPlayer() { return player; }
 }
 

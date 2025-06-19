@@ -36,7 +36,7 @@ public class Database {
             String sql = "INSERT INTO scores (name, time, score) VALUES (?, ?, ?)";
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setString(1, name);
-                ps.setLong(2, time); // <-- hier wird bereits Sekundenwert erwartet
+                ps.setLong(2, time);
                 ps.setInt(3, score);
                 ps.executeUpdate();
             }
@@ -56,9 +56,5 @@ public class Database {
             }
         }
         return list;
-    }
-
-    public void close() throws SQLException {
-        if (connection != null) connection.close();
     }
 }

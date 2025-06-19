@@ -17,6 +17,7 @@ public class MainFrame extends JFrame {
         pack();
         setLocationRelativeTo(null);
         controller = new GameController(panel);
+
         // KeyListener mit Player aus Controller registrieren
         panel.addKeyListener(new InputHandler(controller.getPlayer(), panel));
         new Thread(controller).start();

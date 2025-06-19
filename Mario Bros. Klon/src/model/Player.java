@@ -18,7 +18,7 @@ public class Player {
     public PowerUpType powerUp = PowerUpType.NONE;
 
     private static final int GRAVITY = 1;
-    private static final int JUMP_STRENGTH = -20;  // erhöht Sprunghöhe
+    private static final int JUMP_STRENGTH = -20;
     private static final int WALK_SPEED = 4;
 
     public Player(int x, int y) {
