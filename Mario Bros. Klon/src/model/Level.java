@@ -21,40 +21,85 @@ public class Level {
     }
 
     private void generateLevel() {
-        // Ebene wie bisher generieren
-        for (int i = 0; i < width; i += 32) blocks.add(new Block(i, 532, BlockType.GROUND));
-        for (int i = 300; i < 500; i += 32) blocks.add(new Block(i, 400, BlockType.BRICK));
+        // Boden durchgehend
+        for (int i = 0; i < width; i += 32) {
+            blocks.add(new Block(i, 532, BlockType.GROUND));
+        }
+
+        // Früher Bereich: einfache Blöcke
+        for (int i = 300; i < 500; i += 32) {
+            blocks.add(new Block(i, 400, BlockType.BRICK));
+        }
+
         blocks.add(new Block(350, 300, BlockType.QUESTION));
         blocks.add(new Block(450, 300, BlockType.QUESTION));
+
+        // Kleine Röhre
         for (int i = 0; i < 3; i++) {
-            blocks.add(new Block(800, 532 - i*32, BlockType.PIPE));
-            blocks.add(new Block(832, 532 - i*32, BlockType.PIPE));
+            blocks.add(new Block(800, 532 - i * 32, BlockType.PIPE));
+            blocks.add(new Block(832, 532 - i * 32, BlockType.PIPE));
         }
-        for (int i = 1000; i < 1200; i += 32) blocks.add(new Block(i, 350, BlockType.BRICK));
-        for (int step = 0; step < 8; step++)
-            for (int j = 0; j <= step; j++)
-                blocks.add(new Block(width-300 + step*32, 532-j*32, BlockType.BRICK));
+
+        // Mittelbereich mit Plattformen
+        for (int i = 1000; i < 1200; i += 32) {
+            blocks.add(new Block(i, 350, BlockType.BRICK));
+        }
+
+        // Plattform-Stufen
+        for (int step = 0; step < 8; step++) {
+            for (int j = 0; j <= step; j++) {
+                blocks.add(new Block(width - 600 + step * 32, 532 - j * 32, BlockType.BRICK));
+            }
+        }
+
+        // Springpassagen / Hürden
+        for (int i = 1400; i <= 1800; i += 160) {
+            blocks.add(new Block(i, 450, BlockType.BRICK));
+            blocks.add(new Block(i + 32, 450, BlockType.QUESTION));
+        }
+
+        // Langgezogene Brücke / flache Plattform
+        for (int i = 2000; i < 2400; i += 32) {
+            blocks.add(new Block(i, 400, BlockType.BRICK));
+        }
+
+        // "Turm" vor Ziel
+        for (int step = 0; step < 5; step++) {
+            for (int j = 0; j <= step; j++) {
+                blocks.add(new Block(width - 300 + step * 32, 532 - j * 32, BlockType.BRICK));
+            }
+        }
+
+        // Gegner verteilen
         enemies.add(new Enemy(400, 500, model.enums.EnemyType.GOOMBA));
         enemies.add(new Enemy(600, 500, model.enums.EnemyType.GOOMBA));
         enemies.add(new Enemy(1100, 318, model.enums.EnemyType.GOOMBA));
         enemies.add(new Enemy(1500, 500, model.enums.EnemyType.KOOPA));
+        enemies.add(new Enemy(1900, 500, model.enums.EnemyType.KOOPA));
+        enemies.add(new Enemy(2300, 368, model.enums.EnemyType.GOOMBA));
+
+        // Items
         items.add(new Item(200, 500, model.enums.ItemType.COIN));
         items.add(new Item(250, 500, model.enums.ItemType.COIN));
         items.add(new Item(1050, 318, model.enums.ItemType.COIN));
-        // Ziel erstellen
+        items.add(new Item(1450, 418, model.enums.ItemType.MUSHROOM));
+        items.add(new Item(2100, 368, model.enums.ItemType.FIRE_FLOWER));
+        items.add(new Item(2600, 500, model.enums.ItemType.COIN));
+
+        // Ziel am Ende
         goal = new Goal(width - 100, 500, 50, 100);
     }
 
+
     public void update() {
         enemies.forEach(Enemy::update);
-        // Ziel braucht kein Update
     }
 
     public void draw(Graphics2D g) {
         g.setColor(new Color(135,206,235));
         g.fillRect(0,0,width,600);
         g.setColor(Color.WHITE);
-        for (int i=0;i<width;i+=200) {
+        for (int i=0; i<width; i+=200) {
             g.fillOval(i,100,60,30);
             g.fillOval(i+20,90,40,25);
             g.fillOval(i+40,100,50,30);

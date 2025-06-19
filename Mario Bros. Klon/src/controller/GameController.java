@@ -50,14 +50,25 @@ public class GameController implements Runnable {
     private void update() {
         player.update();
         level.update();
-        // handleGoalCollision();  // Ziel-Kollision zuerst prüfen
         handleBlockCollisions();
         handleItemCollisions();
         handleEnemyCollisions();
-        checkLevelComplete();
+        handleGoalCollision();
         if (player.lives <= 0) {
             running = false;
             JOptionPane.showMessageDialog(view, "Game Over", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    private void handleGoalCollision() {
+        if (level.getGoal() != null && player.getBounds().intersects(level.getGoal().getBounds())) {
+            running = false;
+            String name = JOptionPane.showInputDialog(view, "Gib deinen Namen ein:", "Highscore speichern", JOptionPane.PLAIN_MESSAGE);
+            if (name == null || name.isEmpty()) name = "Player";
+            long totalTime = System.currentTimeMillis(); // optional: Zeit stoppen
+            try { database.saveScore(name, totalTime, player.score); }
+            catch (Exception e) { e.printStackTrace(); }
+            JOptionPane.showMessageDialog(view, "Ziel erreicht! Score gespeichert.", "Erfolg", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
