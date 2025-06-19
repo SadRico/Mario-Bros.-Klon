@@ -24,13 +24,11 @@ public class Goal {
 
     public void draw(Graphics2D g) {
         // Fahnenstange zeichnen
-        g.setColor(Color.MAGENTA);
+        g.setColor(Color.WHITE);
         g.fillRect(x, y, width, height);
 
-        // Fahne oben an der Stange (optional)
-        g.setColor(Color.WHITE);
-        g.fillRect(x + width, y, 30, 20);
+        // Fahne oben an der Stange
         g.setColor(Color.RED);
-        g.drawString("Ziel", x + width + 5, y + 15);
+        g.fillRect(x + width, y, 30, 20);
     }
 }
