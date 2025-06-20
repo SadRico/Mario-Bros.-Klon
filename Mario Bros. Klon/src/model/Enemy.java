@@ -38,8 +38,6 @@ public class Enemy {
                     break;
                 }
             }
-
-            // Optional: Levelbegrenzung
             if (x < 0 || x > 3200 - width) {
                 direction *= -1;
                 velocityX = direction * 2;

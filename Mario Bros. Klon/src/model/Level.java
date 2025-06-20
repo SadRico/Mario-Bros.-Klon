@@ -37,7 +37,7 @@ public class Level {
         blocks.add(new Block(350, 300, BlockType.QUESTION));
         blocks.add(new Block(450, 300, BlockType.QUESTION));
 
-        // Kleine Röhre
+        // Röhre
         for (int i = 0; i < 3; i++) {
             blocks.add(new Block(800, 532 - i * 32, BlockType.PIPE));
             blocks.add(new Block(832, 532 - i * 32, BlockType.PIPE));

@@ -11,7 +11,7 @@ public class Database {
         try {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:mario_scores.db");
-            createTable(); // <- WICHTIG!
+            createTable();
         } catch (Exception e) {
             e.printStackTrace();
         }

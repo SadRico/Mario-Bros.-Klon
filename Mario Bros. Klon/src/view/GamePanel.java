@@ -39,7 +39,7 @@ public class GamePanel extends JPanel {
             level.draw(g2d);
             player.draw(g2d);
 
-            // Feuerbälle zeichnen (wichtig!)
+            // Feuerbälle zeichnen
             for (Fireball f : player.fireballs) {
                 if (f.active) {
                     f.draw(g2d);
@@ -52,8 +52,7 @@ public class GamePanel extends JPanel {
             overlay.draw(g2d, player, elapsedTime);
         }
     }
-
-
+    
     public void setup(Level level, Player player) {
         this.level = level;
         this.player = player;
