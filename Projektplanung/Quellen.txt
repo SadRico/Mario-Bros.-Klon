@@ -20,6 +20,7 @@ https://dev.java/learn/
 
 Mockup und Klassendiagramm:
 https://creately.com/de/diagram-type/klassendiagramm/
+https://plantuml.com/de/
 
 Mein eigenes Bomberman Projekt aus JavaScript Modul:
 https://github.com/SadRico/Bomberman
