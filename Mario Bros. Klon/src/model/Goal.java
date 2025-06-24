@@ -17,7 +17,6 @@ public class Goal {
         this.y = groundY - flagHeight; // Fahnenstange steht auf dem Boden
     }
 
-
     public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
     }

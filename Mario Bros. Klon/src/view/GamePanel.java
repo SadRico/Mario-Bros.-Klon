@@ -52,7 +52,7 @@ public class GamePanel extends JPanel {
             overlay.draw(g2d, player, elapsedTime);
         }
     }
-    
+
     public void setup(Level level, Player player) {
         this.level = level;
         this.player = player;
