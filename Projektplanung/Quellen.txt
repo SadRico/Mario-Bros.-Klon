@@ -22,5 +22,6 @@ Mockup und Klassendiagramm:
 https://creately.com/de/diagram-type/klassendiagramm/
 https://plantuml.com/de/
 
-Mein eigenes Bomberman Projekt aus JavaScript Modul:
+Meine Projekte:
 https://github.com/SadRico/Bomberman
+https://github.com/SadRico/Tower-Defense
