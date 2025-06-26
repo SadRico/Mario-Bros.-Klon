@@ -24,12 +24,12 @@ public class Level {
         int levelHeight = 560;
         int goalX = width - 100;
 
-        // Boden durchgehend
+        // Boden
         for (int i = 0; i < width; i += 32) {
             blocks.add(new Block(i, 532, BlockType.GROUND));
         }
 
-        // Früher Bereich: einfache Blöcke
+        // Einfache Blöcke
         for (int i = 300; i < 500; i += 32) {
             blocks.add(new Block(i, 400, BlockType.BRICK));
         }
@@ -55,7 +55,7 @@ public class Level {
             }
         }
 
-        //  flache Plattform
+        // Flache Plattform
         for (int i = 2000; i < 2400; i += 32) {
             blocks.add(new Block(i, 400, BlockType.BRICK));
         }
